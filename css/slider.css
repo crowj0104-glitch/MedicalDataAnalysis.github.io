@@ -1,0 +1,328 @@
+/* ==================== 滚动动画效果 ==================== */
+
+/* -------------------- 视图时间线动画 -------------------- */
+
+@keyframes slide-fade-in {
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateY(30px);
+		filter: blur(2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+		filter: blur(0);
+	}
+}
+
+/* -------------------- 滑块项的滚动动画 -------------------- */
+
+.slider-item {
+	/* 添加视图时间线动画 */
+	animation: slide-fade-in both;
+	animation-timeline: view();
+	animation-range: entry 0% cover 40%;
+
+	/* 保持现有样式，增强视觉效果 */
+	transform-style: preserve-3d;
+	perspective: 1000px;
+	will-change: transform, opacity;
+}
+
+/* 不同滑块项的动画延迟，创造错落有致的效果 */
+.slider-item:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+.slider-item:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.slider-item:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+/* -------------------- 图表容器的滚动动画 -------------------- */
+
+.chart-container {
+	/* 图表容器也添加动画 */
+	animation: slide-fade-in both;
+	animation-timeline: view();
+	animation-range: entry 10% cover 50%;
+
+	/* 增强立体感 */
+	transform-style: preserve-3d;
+	will-change: transform, opacity;
+}
+
+/* -------------------- 图表标题的滚动动画 -------------------- */
+
+.chart-title {
+	animation: slide-fade-in both;
+	animation-timeline: view();
+	animation-range: entry 5% cover 30%;
+
+	/* 稍微不同的动画效果 */
+	animation-duration: 0.8s;
+	animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* -------------------- 编辑按钮的滚动动画 -------------------- */
+
+.edit-btn {
+	animation: slide-fade-in both;
+	animation-timeline: view();
+	animation-range: entry 20% cover 60%;
+
+	animation-duration: 0.6s;
+	animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* -------------------- 导航指示器的滚动动画 -------------------- */
+
+.slider-indicator {
+	animation: slide-fade-in both;
+	animation-timeline: view();
+	animation-range: entry 50% cover 80%;
+	animation-duration: 1s;
+}
+
+/* -------------------- 浏览器兼容性回退方案 -------------------- */
+
+@supports not (animation-timeline: view()) {
+
+	.slider-item,
+	.chart-container,
+	.chart-title,
+	.edit-btn,
+	.slider-indicator {
+		opacity: 0;
+		transform: translateY(30px) scale(0.95);
+		transition: opacity 0.6s ease, transform 0.6s ease;
+	}
+
+	.slider-item.visible,
+	.chart-container.visible,
+	.chart-title.visible,
+	.edit-btn.visible,
+	.slider-indicator.visible {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+/* ==================== 图表标签栏样式 ==================== */
+
+/* -------------------- 标签栏容器 - 玻璃效果 -------------------- */
+
+.slider-tabs {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	z-index: 20;
+	transform: translateX(-50%);
+
+	display: flex;
+	gap: 12px;
+	padding: 6px;
+
+	background: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	border-radius: 40px;
+	box-shadow: 0 4px 20px rgba(26, 95, 122, 0.15),
+		inset 0 1px 1px rgba(255, 255, 255, 0.6);
+
+	/* 标签栏滚动动画 */
+	animation: tab-slide-down 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 标签栏的玻璃高光效果 */
+.slider-tabs::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	background: linear-gradient(135deg,
+			rgba(255, 255, 255, 0.4) 0%,
+			rgba(255, 255, 255, 0.1) 50%,
+			transparent 100%);
+	border-radius: 40px;
+	pointer-events: none;
+}
+
+/* -------------------- 标签按钮 -------------------- */
+
+.slider-tab {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 20px;
+
+	background: transparent;
+	border: none;
+	border-radius: 30px;
+	color: #1a5f7a;
+	font-size: 0.28rem;
+	font-weight: 600;
+	overflow: hidden;
+
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 标签图标 */
+.tab-icon {
+	font-size: 0.32rem;
+	transition: transform 0.3s ease;
+}
+
+/* 标签文本 */
+.tab-label {
+	position: relative;
+	z-index: 2;
+	letter-spacing: 1px;
+}
+
+/* 指示器 */
+.tab-indicator {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 3px;
+	background: linear-gradient(90deg, #c60718, #d67a71);
+	border-radius: 3px;
+	opacity: 0;
+	transform: translateX(-50%);
+	transition: all 0.3s ease;
+}
+
+/* 激活状态 */
+.slider-tab.active {
+	background: rgba(26, 95, 122, 0.1);
+	color: #c60718;
+}
+
+.slider-tab.active .tab-indicator {
+	bottom: 6px;
+	width: 70%;
+	opacity: 1;
+}
+
+.slider-tab.active .tab-icon {
+	color: #c60718;
+	transform: scale(1.1);
+}
+
+/* 悬停效果 */
+.slider-tab:hover {
+	background: rgba(26, 95, 122, 0.08);
+	transform: translateY(-2px);
+}
+
+.slider-tab:hover .tab-icon {
+	transform: scale(1.15);
+}
+
+/* 点击波纹效果 */
+.slider-tab::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 5px;
+	height: 5px;
+	background: rgba(198, 7, 24, 0.3);
+	border-radius: 100%;
+	opacity: 0;
+	transform: scale(1, 1) translate(-50%);
+	transform-origin: 50% 50%;
+}
+
+.slider-tab:focus:not(:active)::after {
+	animation: tab-ripple 0.6s ease-out;
+}
+
+@keyframes tab-ripple {
+	0% {
+		transform: scale(0, 0);
+		opacity: 0.5;
+	}
+
+	100% {
+		transform: scale(40, 40);
+		opacity: 0;
+	}
+}
+
+/* -------------------- 标签栏动画关键帧 -------------------- */
+
+@keyframes tab-slide-down {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+/* -------------------- 标签栏视差效果 -------------------- */
+
+.parallax-enabled .slider-tabs {
+	transform: translateX(-50%) translateZ(30px);
+	transform-style: preserve-3d;
+	box-shadow: 0 8px 30px rgba(26, 95, 122, 0.2),
+		inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* -------------------- 标签栏禁用状态 -------------------- */
+
+.slider-tabs.disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+/* -------------------- 响应式调整 -------------------- */
+
+@media (max-width: 768px) {
+	.slider-tabs {
+		top: -40px;
+		gap: 6px;
+		padding: 4px;
+	}
+
+	.slider-tab {
+		padding: 8px 16px;
+		font-size: 0.22rem;
+	}
+
+	.tab-icon {
+		font-size: 0.26rem;
+	}
+}
+
+/* 移动端紧凑布局 */
+@media (max-width: 480px) {
+	.slider-tabs {
+		width: 95%;
+		justify-content: center;
+	}
+
+	.slider-tab {
+		padding: 8px 12px;
+	}
+
+	.tab-label {
+		font-size: 0.2rem;
+	}
+}

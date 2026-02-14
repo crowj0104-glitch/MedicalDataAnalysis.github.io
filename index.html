@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>医疗数据图表</title>
+
+		<!-- ==================== 样式文件 ==================== -->
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="css/chart-3d-enhanced.css" />
+		<link rel="stylesheet" href="css/edit.css" />
+		<link rel="stylesheet" href="css/parallax.css" />
+		<link rel="stylesheet" href="css/slider.css" />
+		<link rel="stylesheet" href="css/tabbar.css" />
+
+		<!-- ==================== ECharts 库文件 ==================== -->
+		<script src="js/echarts.min.js"></script>
+		<script src="js/echarts-gl.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+	</head>
+
+	<body>
+		<!-- ==================== 视差背景层 ==================== -->
+		<div class="parallax-bg" id="parallax-bg">
+			<!-- 医疗图标装饰元素会通过JS动态添加 -->
+		</div>
+
+		<!-- ==================== 头部区域 ==================== -->
+		<header>
+			<h1>医疗呼救数据分析 - 图表展示</h1>
+			<div class="show-time"></div>
+		</header>
+
+		<!-- ==================== 滑块图表展示区域 ==================== -->
+		<section class="slider-container">
+			<div class="slider-track">
+				<!-- 热力图 -->
+				<div class="slider-item">
+					<div class="chart-title">
+						各年龄段X呼救时段 急救呼救量
+						<!-- 编辑按钮 -->
+						<button class="edit-btn" data-chart="heatmap">✎ 编辑数据</button>
+					</div>
+					<div class="chart-container">
+						<div class="chart-wrapper" id="chart-heatmap"></div>
+					</div>
+				</div>
+
+				<!-- 饼图 -->
+				<div class="slider-item">
+					<div class="chart-title">
+						病症类型 急救呼救量
+						<!-- 编辑按钮 -->
+						<button class="edit-btn" data-chart="pie">✎ 编辑数据</button>
+					</div>
+					<div class="chart-container">
+						<div class="chart-wrapper" id="chart-pie"></div>
+					</div>
+				</div>
+
+				<!-- 3D图表 -->
+				<div class="slider-item">
+					<div class="chart-title">
+						症状-位置 统计
+						<!-- 编辑按钮 -->
+						<button class="edit-btn" data-chart="3d">✎ 编辑数据</button>
+					</div>
+					<div class="chart-container">
+						<!-- 3D图表容器 - ID保持不变 -->
+						<div class="chart-wrapper" id="chart-3d"></div>
+						<!-- 视角控制按钮将动态添加到这里，而不是在chart-wrapper内部 -->
+					</div>
+				</div>
+			</div>
+
+			<!-- ==================== 导航指示器 ==================== -->
+			<div class="slider-indicator">
+				<div class="indicator-dots">
+					<span class="dot active" data-index="0"></span>
+					<span class="dot" data-index="1"></span>
+					<span class="dot" data-index="2"></span>
+				</div>
+				<div class="slider-progress">
+					<div class="progress-bar"></div>
+				</div>
+			</div>
+
+			<!-- ==================== 导航按钮 ==================== -->
+			<button class="slider-nav prev">‹</button>
+			<button class="slider-nav next">›</button>
+		</section>
+
+		<!-- ==================== 编辑面板区域 ==================== -->
+
+		<!-- 热力图编辑面板（初始隐藏） -->
+		<div class="edit-panel" id="edit-panel-heatmap" style="display: none;">
+			<div class="edit-panel-header">
+				<h3>热力图数据编辑</h3>
+				<button class="close-btn">×</button>
+			</div>
+			<div class="edit-panel-content">
+				<textarea id="heatmap-input" placeholder="格式：时间段中文,年龄段中文,数值（每行一条）
+
+示例：
+上午（6-11点）,0-14岁（儿童）,69
+下午（12-17点）,15-35岁（青年）,101
+晚上（18-23点）,36-59岁（中年）,30
+凌晨（0-5点）,60-80岁（老年）,72
+..." rows="8"></textarea>
+				<div class="edit-buttons">
+					<button onclick="updateHeatmap()">更新图表</button>
+					<button class="cancel-btn">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 饼图编辑面板（初始隐藏） -->
+		<div class="edit-panel" id="edit-panel-pie" style="display: none;">
+			<div class="edit-panel-header">
+				<h3>饼图数据编辑</h3>
+				<button class="close-btn">×</button>
+			</div>
+			<div class="edit-panel-content">
+				<textarea id="pie-input" placeholder="格式：病症名称,数值（每行一条）
+
+示例：
+车祸,2053
+外伤,557
+头晕,495
+..." rows="8"></textarea>
+				<div class="edit-buttons">
+					<button onclick="updatePie()">更新图表</button>
+					<button class="cancel-btn">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 3D图表编辑面板（初始隐藏） -->
+		<div class="edit-panel" id="edit-panel-3d" style="display: none;">
+			<div class="edit-panel-header">
+				<h3>3D图表数据编辑</h3>
+				<button class="close-btn">×</button>
+			</div>
+			<div class="edit-panel-content">
+				<textarea id="3d-input" placeholder="格式：症状名称,位置名称,数值（每行一条）
+
+示例：
+外伤,上望,23
+外伤,中医院,4
+头晕,上望,12
+..." rows="8"></textarea>
+				<div class="edit-buttons">
+					<button onclick="update3D()">更新图表</button>
+					<button class="cancel-btn">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- ==================== JavaScript文件 ==================== -->
+
+		<!-- 基础库文件 -->
+		<script src="js/flexible.js"></script>
+		<script src="js/jquery.js"></script>
+
+		<!-- 核心功能文件 -->
+		<script src="js/index.js"></script>
+
+		<!-- 辅助功能文件 -->
+		<script src="js/chart-3d-enhanced.js"></script>
+		<script src="js/edit-panel.js"></script>
+		<script src="js/input.js"></script>
+		<script src="js/parallax.js"></script>
+		<script src="js/slider.js"></script>
+		<script src="js/tabbar.js"></script>
+
+		<!-- ==================== 时间显示脚本 ==================== -->
+		<script>
+			// 时间显示脚本
+			var t = null;
+			t = setTimeout(time, 1000);
+
+			function time() {
+				clearTimeout(t);
+				dt = new Date();
+				var y = dt.getFullYear();
+				var mt = dt.getMonth() + 1;
+				var day = dt.getDate();
+				var h = dt.getHours();
+				var m = dt.getMinutes();
+				var s = dt.getSeconds();
+				document.querySelector(".show-time").innerHTML =
+					"当前时间：" + y + "年" + mt + "月" + day + "日-" + h + "时" + m + "分" + s + "秒";
+				t = setTimeout(time, 1000);
+			}
+		</script>
+	</body>
+</html>

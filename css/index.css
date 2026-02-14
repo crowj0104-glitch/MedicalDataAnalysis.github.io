@@ -1,0 +1,559 @@
+/* ==================== 全局重置样式 ==================== */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* 列表样式重置 */
+li {
+	list-style: none;
+}
+
+/* 页面主体基础样式 */
+body {
+	min-height: 100vh;
+	background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+	color: #333;
+	font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+/* ==================== 头部区域样式 ==================== */
+
+header {
+	position: relative;
+	height: 1.2rem;
+	background: linear-gradient(90deg,
+			#1a5f7a 0%,
+			#23758b 25%,
+			#2a8c9e 50%,
+			#3b9b7e 75%,
+			#4caf50 100%);
+	box-shadow: 0 4px 12px rgba(26, 95, 122, 0.15);
+}
+
+/* 头部标题样式 */
+header h1 {
+	font-size: 0.5rem;
+	font-weight: 600;
+	line-height: 1rem;
+	color: #ffffff;
+	text-align: center;
+	letter-spacing: 1px;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 头部时间显示样式 */
+header .show-time {
+	position: absolute;
+	top: 0;
+	right: 0.375rem;
+	padding: 0.1rem 0.3rem;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border-radius: 4px;
+	color: #ffffff;
+	font-size: 0.25rem;
+	font-weight: 500;
+	line-height: 1rem;
+}
+
+/* ==================== 图表区域样式 ==================== */
+
+/* -------------------- 图表标题栏 -------------------- */
+
+.chart-title {
+	position: relative;
+	left: 5%;
+	right: 5%;
+	width: 90%;
+	height: 1rem;
+	margin-bottom: 10px;
+	padding: 0.15rem 0;
+
+	/* 玻璃效果背景 */
+	background: linear-gradient(105deg,
+			rgba(210, 235, 245, 0.95) 0%,
+			rgba(200, 235, 230, 0.92) 40%,
+			rgba(190, 235, 220, 0.9) 70%,
+			rgba(210, 240, 225, 0.88) 100%);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+
+	border-bottom: 2px solid rgba(26, 95, 122, 0.35);
+	border-radius: 8px 8px 0 0;
+	color: #0a4a5e;
+	font-size: 0.4rem;
+	font-weight: 700;
+	line-height: 0.7rem;
+	text-align: center;
+	text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+	box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9),
+		0 2px 6px rgba(26, 95, 122, 0.08);
+}
+
+/* 标题栏微光动画 */
+.chart-title::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 200%;
+	height: 100%;
+	background: linear-gradient(90deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.2) 45%,
+			rgba(255, 255, 255, 0.3) 50%,
+			rgba(255, 255, 255, 0.2) 55%,
+			transparent 100%);
+	pointer-events: none;
+	animation: shine 8s infinite;
+}
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	20% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+/* -------------------- 图表容器 -------------------- */
+
+.chart-container {
+	position: relative;
+	left: 5%;
+	right: 5%;
+	width: 90%;
+	height: 450px;
+	padding: 10px;
+
+	/* 视觉 */
+	background: rgba(230, 240, 250, 0.6);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(220, 235, 245, 0.3);
+	border-image: linear-gradient(135deg,
+			rgba(26, 95, 122, 0.3),
+			rgba(76, 175, 80, 0.3),
+			rgba(255, 255, 255, 0.3)) 1;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(42, 140, 158, 0.1),
+		0 8px 32px rgba(26, 95, 122, 0.08),
+		inset 0 1px 1px rgba(255, 255, 255, 0.1);
+
+	/* 装饰背景点 */
+	background-repeat: no-repeat;
+	background-position: 5px 5px,
+		calc(100% - 5px) 5px,
+		5px calc(100% - 5px),
+		calc(100% - 5px) calc(100% - 5px);
+	background-size: 20px 20px;
+
+	/* 动画 */
+	transition: all 0.3s ease;
+}
+
+/* 图表容器悬停效果 */
+.chart-panel:hover .chart-container {
+	background: rgba(255, 255, 255, 0.9);
+	border-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 8px 25px rgba(42, 140, 158, 0.15),
+		0 12px 40px rgba(26, 95, 122, 0.1),
+		inset 0 1px 1px rgba(255, 255, 255, 0.2);
+	transform: translateY(-4px) scale(1.005);
+	transition: all 0.3s ease;
+}
+
+/* -------------------- 图表包裹层 -------------------- */
+
+.chart-wrapper {
+	position: relative;
+	top: 2%;
+	left: 2%;
+	right: 2%;
+	bottom: 2%;
+	width: 96%;
+	height: 96%;
+	opacity: 0;
+	transition: all 0.3s ease;
+	animation: fadeIn 0.8s ease forwards;
+}
+
+.chart-wrapper:hover {
+	box-shadow: 0 0 10px rgba(200, 0, 20, 0.4);
+}
+
+/* -------------------- 3D图表特殊样式 -------------------- */
+
+/* 3D图表容器 */
+.chart-3d-container {
+	position: relative;
+}
+
+/* 3D图表canvas样式 */
+#chart-3d canvas {
+	pointer-events: auto !important;
+}
+
+/* 3D图表提示文本样式 */
+.chart-3d-tip {
+	position: absolute;
+	top: 15px;
+	left: 20px;
+	z-index: 10;
+	padding: 6px 12px;
+	background: rgba(250, 250, 250, 1);
+	border-radius: 6px;
+	color: #000000;
+	font-size: 12px;
+	line-height: 1.4;
+	box-shadow: 0 2px 8px rgba(200, 20, 20, 0.3);
+	pointer-events: none;
+}
+
+/* 3D提示文本子项样式 */
+.chart-3d-tip span {
+	display: block;
+	font-weight: 500;
+}
+
+/* -------------------- 图表加载动画 -------------------- */
+
+.chart-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: #c60718;
+}
+
+.loading-spinner {
+	width: 40px;
+	height: 40px;
+	margin-bottom: 10px;
+	border: 3px solid rgba(198, 7, 24, 1);
+	border-top-color: #c60718;
+	border-radius: 50%;
+	animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes pulse {
+
+	0%,
+	100% {
+		opacity: 0.6;
+	}
+
+	50% {
+		opacity: 1;
+	}
+}
+
+/* 图表动画延迟 */
+#chart-heatmap {
+	animation-delay: 0.2s;
+}
+
+#chart-pie {
+	animation-delay: 0.4s;
+}
+
+/* 3D图表容器延迟 */
+#chart-3d {
+	top: 2%;
+	left: 5%;
+	right: 5%;
+	width: 90%;
+	height: 96%;
+	animation-delay: 0.6s;
+}
+
+/* -------------------- 导航禁用样式 -------------------- */
+
+.navigation-disabled {
+	pointer-events: none !important;
+	opacity: 0.5 !important;
+	cursor: not-allowed !important;
+}
+
+/* 全屏宽度类 */
+.full-width {
+	width: 100%;
+	min-width: 90%;
+}
+
+/* ==================== 滑块容器样式 ==================== */
+
+.slider-container {
+	position: relative;
+	width: 90%;
+	height: 600px;
+	margin: 24px auto;
+
+	/* 视觉 */
+	background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 8px 32px rgba(26, 95, 122, 0.1),
+		0 4px 16px rgba(255, 255, 255, 0.5),
+		inset 0 1px 1px rgba(255, 255, 255, 0.3);
+
+	/* 3D效果 */
+	transform-style: preserve-3d;
+	perspective: 800px;
+	transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 隐藏默认滚动条 */
+.slider-container::-webkit-scrollbar {
+	display: none;
+}
+
+/* 滑块轨道 */
+.slider-track {
+	display: flex;
+	height: 100%;
+	scroll-behavior: smooth;
+	transition: transform 0.5s ease;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* 滑块项 */
+.slider-item {
+	flex: 0 0 80%;
+	min-width: 100%;
+	height: 90%;
+	padding: 20px;
+
+	/* 玻璃效果 */
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	box-sizing: border-box;
+}
+
+/* -------------------- 导航按钮 -------------------- */
+
+.slider-nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+
+	/* 布局 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+
+	/* 视觉 */
+	background: rgba(26, 95, 122, 0.85);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 50%;
+	color: white;
+	font-size: 24px;
+	box-shadow: 0 4px 15px rgba(26, 95, 122, 0.3),
+		inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+	/* 交互 */
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.slider-nav:hover {
+	background: rgba(26, 95, 122, 0.95);
+	border-color: rgba(255, 255, 255, 0.3);
+	transform: translateY(-50%) scale(1.1);
+	box-shadow: 0 6px 20px rgba(26, 95, 122, 0.4),
+		inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.slider-nav.prev {
+	left: 10px;
+}
+
+.slider-nav.next {
+	right: 10px;
+}
+
+/* -------------------- 导航指示器 -------------------- */
+
+.slider-indicator {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20px;
+	padding: 0 20px 20px;
+}
+
+.indicator-dots {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+
+/* 导航点样式 */
+.dot {
+	width: 12px;
+	height: 12px;
+
+	/* 玻璃效果 */
+	background: rgba(26, 95, 122, 0.3);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 50%;
+
+	/* 交互 */
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.dot.active {
+	background: rgba(26, 95, 122, 0.8);
+	border-color: rgba(255, 255, 255, 0.4);
+	transform: scale(1.3);
+	box-shadow: 0 0 10px rgba(26, 95, 122, 0.4),
+		inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.dot:hover {
+	background: rgba(76, 175, 80, 0.7);
+	border-color: rgba(255, 255, 255, 0.3);
+	transform: scale(1.2);
+}
+
+.slider-progress {
+	width: 200px;
+	height: 6px;
+
+	/* 玻璃背景 */
+	background: rgba(26, 95, 122, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+.progress-bar {
+	width: 33.33%;
+	height: 100%;
+
+	background: linear-gradient(90deg,
+			rgba(26, 95, 122, 0.8),
+			rgba(76, 175, 80, 0.8));
+	box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3),
+		0 0 10px rgba(76, 175, 80, 0.4);
+	transition: width 0.3s ease;
+}
+
+/* 触摸滑动提示 */
+.slider-hint {
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: #c60718;
+	font-size: 14px;
+	opacity: 0.8;
+	animation: pulse 2s infinite;
+}
+
+/* ==================== 玻璃效果装饰层 ==================== */
+
+/* 玻璃效果边框装饰 */
+.glass-border {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+
+	/* 模拟玻璃边缘光泽 */
+	background: linear-gradient(135deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.1) 20%,
+			transparent 40%,
+			rgba(255, 255, 255, 0.05) 60%,
+			transparent 80%,
+			rgba(255, 255, 255, 0.1) 100%);
+	border-radius: 12px;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+		inset 0 0 20px rgba(255, 255, 255, 0.1);
+	pointer-events: none;
+}
+
+/* 玻璃效果增强层 */
+.glass-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+
+	background: linear-gradient(135deg,
+			rgba(255, 255, 255, 0.1) 0%,
+			rgba(255, 255, 255, 0.05) 50%,
+			rgba(255, 255, 255, 0.1) 100%);
+	border-radius: 12px;
+	mix-blend-mode: overlay;
+	pointer-events: none;
+}
+
+/* ==================== 响应式调整 ==================== */
+
+@media (max-width: 768px) {
+	.edit-btn {
+		padding: 5px 12px;
+		border-width: 1px;
+		font-size: 0.2rem;
+	}
+
+	.edit-btn:before,
+	.edit-btn:after {
+		top: -25px;
+	}
+
+	.chart-container {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+	}
+
+	.slider-container {
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+	}
+}

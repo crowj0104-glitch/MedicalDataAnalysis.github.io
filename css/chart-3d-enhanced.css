@@ -1,0 +1,251 @@
+/* ==================== 3D图表视角控制 ==================== */
+/* 修改点1: 将position: absolute的锚点从#chart-3d改为.chart-container */
+/* 修改点2: 增加重建时的过渡动画 */
+/* 修改点3: 确保按钮不会因图表重建而丢失样式 */
+
+/* -------------------- 容器定义 -------------------- */
+
+/* 3D图表容器必须设置相对定位 */
+.chart-container {
+	position: relative;
+}
+
+/* -------------------- 视角控制容器 -------------------- */
+
+/* 视角控制容器 - 绝对定位在图表容器右侧 */
+.chart-3d-view-controls {
+	/* 定位 */
+	position: absolute;
+	top: 50%;
+	right: 10%;
+	z-index: 999;
+	transform: translateY(-50%);
+
+	/* 布局 */
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	/* 视觉 */
+	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 20px;
+	box-shadow: 0 8px 25px rgba(25, 100, 125, 0.2);
+	padding: 12px 8px;
+
+	/* 动画 */
+	transition: all 0.3s ease;
+	animation: viewControlsFadeIn 0.4s ease;
+}
+
+@keyframes viewControlsFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-50%) translateX(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(-50%) translateX(0);
+	}
+}
+
+.chart-3d-view-controls:hover {
+	background: rgba(255, 255, 255, 0.95);
+	box-shadow: 0 10px 30px rgba(26, 95, 122, 0.3);
+}
+
+/* -------------------- 视角按钮 -------------------- */
+
+.view-btn {
+	/* 定位 */
+	position: relative;
+
+	/* 布局 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 64px;
+
+	/* 视觉 */
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 20px;
+	color: #1a5f7a;
+	font-size: 0.2rem;
+	font-weight: 600;
+	padding: 8px 4px;
+
+	/* 其他 */
+	cursor: pointer;
+	transition: all 0.25s ease;
+}
+
+.view-btn:hover {
+	background: rgba(26, 95, 122, 0.1);
+	border-color: rgba(26, 95, 122, 0.2);
+	color: #0a3a4a;
+	transform: scale(1.05);
+}
+
+/* 激活状态 */
+.view-btn.active {
+	background: linear-gradient(145deg, #1a5f7a, #2a8c9e);
+	border-color: rgba(255, 255, 255, 0.3);
+	color: white;
+	box-shadow: 0 6px 15px rgba(26, 95, 122, 0.4);
+}
+
+/* 视角图标 */
+.view-icon {
+	font-size: 0.32rem;
+	line-height: 1;
+	margin-bottom: 4px;
+}
+
+/* 视角文字 */
+.view-text {
+	font-size: 0.16rem;
+	line-height: 1.2;
+	letter-spacing: 0.5px;
+}
+
+/* -------------------- 工具提示 -------------------- */
+
+.view-tooltip {
+	/* 定位 */
+	position: absolute;
+	top: 50%;
+	right: 75px;
+	z-index: 1000;
+	transform: translateY(-50%);
+
+	/* 视觉 */
+	background: #1a5f7a;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: 20px;
+	color: white;
+	font-size: 0.18rem;
+	padding: 6px 14px;
+	white-space: nowrap;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+	/* 交互 */
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: all 0.25s ease;
+}
+
+.view-tooltip::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: -6px;
+	transform: translateY(-50%);
+	width: 0;
+	height: 0;
+	border-left: 6px solid #1a5f7a;
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;
+}
+
+.view-btn:hover .view-tooltip {
+	right: 80px;
+	opacity: 1;
+	visibility: visible;
+}
+
+/* -------------------- 特殊按钮 -------------------- */
+
+/* 重置按钮特殊样式 */
+.view-btn.reset-btn {
+	border-top: 1px solid rgba(26, 95, 122, 0.2);
+	margin-top: 8px;
+	padding-top: 12px;
+}
+
+/* -------------------- 临时提示 -------------------- */
+
+.chart-3d-temp-tip {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	z-index: 1000;
+	transform: translateX(-50%);
+
+	background: rgba(26, 95, 122, 0.9);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 30px;
+	color: white;
+	font-size: 0.2rem;
+	font-weight: 600;
+	padding: 8px 24px;
+	white-space: nowrap;
+	box-shadow: 0 6px 20px rgba(26, 95, 122, 0.4);
+
+	pointer-events: none;
+	animation: tipSlideDown 0.3s ease;
+}
+
+@keyframes tipSlideDown {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+/* -------------------- 移动端适配 -------------------- */
+
+@media (max-width: 768px) {
+	.chart-3d-view-controls {
+		right: 8px;
+		gap: 8px;
+		padding: 8px 4px;
+	}
+
+	.view-btn {
+		width: 52px;
+		height: 52px;
+	}
+
+	.view-icon {
+		font-size: 0.26rem;
+	}
+
+	.view-text {
+		font-size: 0.14rem;
+	}
+
+	.view-tooltip {
+		display: none;
+	}
+
+	.chart-3d-temp-tip {
+		width: 80%;
+		font-size: 0.18rem;
+		padding: 6px 16px;
+		white-space: normal;
+		text-align: center;
+	}
+}
+
+/* -------------------- 编辑面板联动 -------------------- */
+
+/* 编辑面板打开时降低透明度 */
+.edit-panel-open .chart-3d-view-controls {
+	opacity: 0.4;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}

@@ -1,0 +1,372 @@
+/* ==================== 编辑面板样式 ==================== */
+
+/* -------------------- 编辑按钮 -------------------- */
+
+/* 编辑按钮样式（水流波纹效果） */
+.edit-btn {
+	/* 定位 */
+	position: absolute;
+	top: 20%;
+	right: 20px;
+	z-index: 5;
+	transform: translateY(-50%);
+
+	/* 布局 */
+	display: inline-block;
+	overflow: hidden;
+
+	/* 视觉 */
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid rgba(26, 95, 122, 0.3);
+	border-radius: 20px;
+	color: #1a5f7a;
+	font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+	font-size: 0.25rem;
+	font-weight: 600;
+	padding: 8px 20px;
+	text-decoration: none;
+	box-shadow: 0 4px 12px rgba(26, 95, 122, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+
+	/* 交互 */
+	cursor: pointer;
+	transition: all 0.4s ease;
+}
+
+/* 水流波纹伪元素 - 公共样式 */
+.edit-btn:before,
+.edit-btn:after {
+	content: "";
+	position: absolute;
+	top: -30px;
+	z-index: -1;
+	width: 200%;
+	aspect-ratio: 1;
+	border: none;
+	border-radius: 40%;
+	background-color: rgba(26, 95, 122, 0.25);
+	transition: transform 1.5s ease, background-color 0.4s ease;
+}
+
+/* 左侧波浪 */
+.edit-btn:before {
+	left: -80%;
+	transform: translate3d(0, 5em, 0) rotate(-340deg);
+}
+
+/* 右侧波浪 */
+.edit-btn:after {
+	right: -80%;
+	transform: translate3d(0, 5em, 0) rotate(390deg);
+}
+
+/* 悬停效果 */
+.edit-btn:hover {
+	background: rgba(255, 255, 255, 0.95);
+	border-color: rgba(26, 95, 122, 0.5);
+	color: #ffffff;
+	transform: translateY(-50%) scale(1.05);
+	box-shadow: 0 6px 20px rgba(26, 95, 122, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* 悬停时波浪动画 */
+.edit-btn:hover:before,
+.edit-btn:hover:after {
+	transform: none;
+	background-color: rgba(26, 95, 122, 0.75);
+}
+
+/* -------------------- 编辑面板 -------------------- */
+
+.edit-panel {
+	/* 定位 - 固定居中 */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1001;
+	transform: translate(-50%, -50%);
+
+	/* 布局 */
+	overflow: hidden;
+	width: 90%;
+	max-width: 500px;
+	max-height: 80vh;
+	margin: 0;
+
+	/* 视觉 */
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 12px;
+	box-shadow: 0 20px 60px rgba(198, 7, 24, 0.25),
+		0 8px 30px rgba(255, 255, 255, 0.3),
+		inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+	/* 状态 */
+	display: none;
+	animation: none;
+
+	/* 拖动支持 */
+	will-change: transform, left, top;
+}
+
+/* 面板悬浮效果 */
+.edit-panel:hover {
+	transform: translate(-50%, -50%) scale(1.01);
+	box-shadow: 0 15px 50px rgba(198, 7, 24, 0.35);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 面板拖动状态 */
+.edit-panel.dragging:hover {
+	transform: none;
+	box-shadow: 0 15px 50px rgba(198, 7, 24, 0.35);
+	transition: none;
+}
+
+/* -------------------- 面板头部 -------------------- */
+
+.edit-panel-header {
+	/* 布局 */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 15px 20px;
+
+	/* 视觉 */
+	background: linear-gradient(90deg, rgba(26, 95, 122, 0.9) 0%, rgba(42, 140, 158, 0.9) 100%);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	color: white;
+	box-shadow: 0 2px 10px rgba(26, 95, 122, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+
+	/* 交互 */
+	cursor: move;
+	user-select: none;
+}
+
+.edit-panel-header:hover {
+	background: linear-gradient(90deg, #c60718, #d67a71);
+}
+
+.edit-panel-header * {
+	user-select: none;
+}
+
+.edit-panel-header h3 {
+	margin: 0;
+	font-size: 0.35rem;
+	font-weight: 600;
+}
+
+/* 关闭按钮 */
+.close-btn {
+	/* 布局 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	z-index: 2;
+
+	/* 视觉 */
+	background: none;
+	border: none;
+	border-radius: 50%;
+	color: white;
+	font-size: 0.4rem;
+
+	/* 交互 */
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+
+/* -------------------- 面板内容 -------------------- */
+
+.edit-panel-content {
+	padding: 20px;
+	max-height: calc(80vh - 80px);
+	overflow-y: auto;
+	background: rgba(255, 255, 255, 0.5);
+}
+
+.edit-panel-content textarea {
+	width: 100%;
+	min-height: 150px;
+	padding: 12px;
+
+	/* 视觉 */
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(176, 212, 227, 0.5);
+	border-radius: 6px;
+	color: #333;
+	font-family: 'Consolas', 'Monaco', monospace;
+	font-size: 0.2rem;
+	line-height: 1.5;
+	resize: vertical;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.edit-panel-content textarea:focus {
+	outline: none;
+	border-color: #4caf50;
+	box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* -------------------- 按钮容器 -------------------- */
+
+.edit-buttons {
+	display: flex;
+	gap: 15px;
+	justify-content: flex-end;
+	margin-top: 20px;
+	padding: 10px;
+
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border-radius: 8px;
+}
+
+.edit-buttons button {
+	padding: 10px 25px;
+
+	/* 视觉 */
+	background: linear-gradient(90deg, rgba(26, 95, 122, 0.9), rgba(76, 175, 80, 0.9));
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 6px;
+	color: white;
+	font-size: 0.22rem;
+	font-weight: 600;
+	box-shadow: 0 4px 12px rgba(26, 95, 122, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+
+	/* 交互 */
+	cursor: pointer;
+	pointer-events: auto;
+	transition: all 0.3s ease;
+}
+
+.edit-buttons button:first-child {
+	background: linear-gradient(90deg, #1a5f7a, #4caf50);
+	color: white;
+}
+
+.edit-buttons button:first-child:hover {
+	background: linear-gradient(90deg, rgba(26, 95, 122, 0.95), rgba(76, 175, 80, 0.95));
+	border-color: rgba(255, 255, 255, 0.3);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(26, 95, 122, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.edit-buttons .cancel-btn {
+	background: #f0f0f0;
+	color: #666;
+}
+
+.edit-buttons .cancel-btn:hover {
+	background: #e0e0e0;
+	transform: translateY(-2px);
+}
+
+/* -------------------- 遮罩层 -------------------- */
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+
+	background: rgba(26, 95, 122, 0.4);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+
+	display: none;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+/* 遮罩层显示时的状态 */
+.overlay.show {
+	opacity: 1;
+}
+
+/* -------------------- 全局状态 -------------------- */
+
+/* 防止背景滚动当面板打开时 */
+body.panel-open {
+	overflow: hidden;
+}
+
+/* 确保编辑面板内的元素可交互 */
+.edit-panel * {
+	pointer-events: auto;
+}
+
+/* -------------------- 动画关键帧 -------------------- */
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* 动态动画类 */
+.edit-panel.slide-in-right {
+	animation: slideInFromRight 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.edit-panel.slide-in-left {
+	animation: slideInFromLeft 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 侧边飞入动画关键帧 */
+@keyframes slideInFromRight {
+	from {
+		opacity: 0;
+		right: -100%;
+		transform: translateY(-50%) scale(0.9);
+		box-shadow: none;
+	}
+
+	to {
+		opacity: 1;
+		right: 50%;
+		transform: translate(50%, -50%) scale(1);
+		box-shadow: 0 10px 40px rgba(198, 7, 24, 0.25);
+	}
+}
+
+@keyframes slideInFromLeft {
+	from {
+		opacity: 0;
+		left: -100%;
+		transform: translateY(-50%) scale(0.9);
+		box-shadow: none;
+	}
+
+	to {
+		opacity: 1;
+		left: 50%;
+		transform: translate(-50%, -50%) scale(1);
+		box-shadow: 0 10px 40px rgba(198, 7, 24, 0.25);
+	}
+}
